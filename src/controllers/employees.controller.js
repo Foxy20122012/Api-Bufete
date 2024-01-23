@@ -59,11 +59,12 @@ export const createEmployee = async (req, res) => {
 export const updateEmployee = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, salary, address, Columnaage } = req.body;
+    const { name, salary, address, age } = req.body;
 
+    // Utilizo una query con placeholders para evitar posibles SQL injection
     const [result] = await pool.query(
-      "UPDATE employee SET name = IFNULL(?, name), salary = IFNULL(?, salary), address = IFNULL(?, address), Columnaage = IFNULL(?, Columnaage) WHERE id = ?",
-      [name, salary, address, Columnaage, id]
+      "UPDATE employee SET name = IFNULL(?, name), salary = IFNULL(?, salary), address = IFNULL(?, address), age = IFNULL(?, age) WHERE id = ?",
+      [name, salary, address, age, id]
     );
 
     if (result.affectedRows === 0)
@@ -73,6 +74,8 @@ export const updateEmployee = async (req, res) => {
 
     res.json(rows[0]);
   } catch (error) {
-    return res.status(500).json({ message: "Something goes wrong" });
+    console.error("Error updating employee:", error);
+    return res.status(500).json({ message: "Error updating employee" });
   }
 };
+
