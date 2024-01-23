@@ -27,6 +27,10 @@ CREATE TABLE MantenimientoVehiculos (
     CostoMantenimiento DECIMAL(10, 2)
 );
 
+ALTER TABLE MantenimientoVehiculos
+MODIFY COLUMN id INT AUTO_INCREMENT;
+
+
 
 
 CREATE TABLE Vehiculos (

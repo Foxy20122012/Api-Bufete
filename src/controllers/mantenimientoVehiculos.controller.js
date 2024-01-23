@@ -1,9 +1,19 @@
 import { pool } from "../db.js";
+import moment from 'moment';
 
 export const getMantenimientosVehiculos = async (req, res) => {
   try {
     const [rows] = await pool.query("SELECT * FROM MantenimientoVehiculos");
-    res.json(rows);
+
+    // Formatear la fecha en cada objeto del array
+    const formattedRows = rows.map((row) => {
+      return {
+        ...row,
+        FechaMantenimiento: moment(row.FechaMantenimiento).format('DD/MM/YYYY'),
+      };
+    });
+
+    res.json(formattedRows);
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
   }
@@ -21,7 +31,13 @@ export const getMantenimientoVehiculo = async (req, res) => {
       return res.status(404).json({ message: "Maintenance record not found" });
     }
 
-    res.json(rows[0]);
+    // Formatear la fecha en el objeto antes de enviar la respuesta
+    const formattedRow = {
+      ...rows[0],
+      FechaMantenimiento: moment(rows[0].FechaMantenimiento).format('DD/MM/YYYY'),
+    };
+
+    res.json(formattedRow);
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong" });
   }
