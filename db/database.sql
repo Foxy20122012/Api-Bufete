@@ -17,3 +17,41 @@ INSERT INTO employee values
   (3, 'John Carter', 50000);
 
 SELECT * FROM employee;
+
+CREATE TABLE MantenimientoVehiculos (
+    ID INT PRIMARY KEY,
+    UnidadAsignada INT,
+    TipoMantenimiento VARCHAR(255),
+    DescripcionMantenimiento TEXT,
+    FechaMantenimiento DATE,
+    CostoMantenimiento DECIMAL(10, 2)
+);
+
+
+
+CREATE TABLE Vehiculos (
+    ID INT PRIMARY KEY,
+    Marca VARCHAR(255),
+    Descripcion VARCHAR(255),
+    Imagen BLOB,
+    Modelo VARCHAR(255),
+    Placa VARCHAR(20),
+    AnioFabricacion INT,
+    CapacidadCarga DECIMAL(10, 2),
+    TipoCombustible VARCHAR(20),
+    EstadoVehiculo VARCHAR(20),
+    KilometrajeActual INT
+);
+
+
+CREATE TABLE AsignacionGasolina (
+    ID INT PRIMARY KEY,
+    VehiculoID INT,
+    CodigoUnico VARCHAR(20),
+    NumeroVehiculo VARCHAR(20),
+    PlacaVehiculo VARCHAR(20),
+    GalonesAsignados DECIMAL(8, 2),
+    Imagen BLOB,
+    Descripcion TEXT
+);
+
