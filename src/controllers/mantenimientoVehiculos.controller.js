@@ -71,27 +71,31 @@ export const createMantenimientoVehiculo = async (req, res) => {
       CostoMantenimiento,
     } = req.body;
 
-    const [rows] = await pool.query(
+    // Formatear la fecha al formato adecuado para la base de datos
+    const formattedFechaMantenimiento = moment(FechaMantenimiento, 'YYYY-MM-DD').format('YYYY-MM-DD');
+
+    const [result] = await pool.query(
       "INSERT INTO MantenimientoVehiculos (UnidadAsignada, TipoMantenimiento, DescripcionMantenimiento, FechaMantenimiento, CostoMantenimiento) VALUES (?, ?, ?, ?, ?)",
       [
         UnidadAsignada,
         TipoMantenimiento,
         DescripcionMantenimiento,
-        FechaMantenimiento,
+        formattedFechaMantenimiento,
         CostoMantenimiento,
       ]
     );
 
     res.status(201).json({
-      ID: rows.insertId,
+      ID: result.insertId,
       UnidadAsignada,
       TipoMantenimiento,
       DescripcionMantenimiento,
-      FechaMantenimiento,
+      FechaMantenimiento: formattedFechaMantenimiento,
       CostoMantenimiento,
     });
   } catch (error) {
-    return res.status(500).json({ message: "Something went wrong" });
+    console.error("Error creating maintenance record:", error);
+    return res.status(500).json({ message: "Error creating maintenance record" });
   }
 };
 
@@ -106,13 +110,16 @@ export const updateMantenimientoVehiculo = async (req, res) => {
       CostoMantenimiento,
     } = req.body;
 
+    // Formatear la fecha al formato adecuado para la base de datos
+    const formattedFechaMantenimiento = moment(FechaMantenimiento, 'YYYY-MM-DD').format('YYYY-MM-DD');
+
     const [result] = await pool.query(
       "UPDATE MantenimientoVehiculos SET UnidadAsignada = IFNULL(?, UnidadAsignada), TipoMantenimiento = IFNULL(?, TipoMantenimiento), DescripcionMantenimiento = IFNULL(?, DescripcionMantenimiento), FechaMantenimiento = IFNULL(?, FechaMantenimiento), CostoMantenimiento = IFNULL(?, CostoMantenimiento) WHERE ID = ?",
       [
         UnidadAsignada,
         TipoMantenimiento,
         DescripcionMantenimiento,
-        FechaMantenimiento,
+        formattedFechaMantenimiento,
         CostoMantenimiento,
         id,
       ]
@@ -126,7 +133,13 @@ export const updateMantenimientoVehiculo = async (req, res) => {
       [id]
     );
 
-    res.json(rows[0]);
+    // Formatear la fecha en la respuesta
+    const formattedRow = {
+      ...rows[0],
+      FechaMantenimiento: moment(rows[0].FechaMantenimiento).format('DD/MM/YYYY'),
+    };
+
+    res.json(formattedRow);
   } catch (error) {
     console.error("Error updating maintenance record:", error);
     return res.status(500).json({ message: "Error updating maintenance record" });
