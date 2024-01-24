@@ -3,6 +3,7 @@ import morgan from "morgan";
 import cors from "cors";
 
 import employeesRoutes from "./routes/employees.routes.js";
+import vehiclesRoutes from "./routes/vehicles.routes.js"
 import mantenimientoVehiculosRoutes from "./routes/mantenimientoVehiculos.routes.js";
 import indexRoutes from "./routes/index.routes.js";
 
@@ -16,6 +17,7 @@ app.use(express.json());
 // Routes
 app.use("/", indexRoutes);
 app.use("/api", employeesRoutes);
+app.use("/api", vehiclesRoutes);
 app.use("/api", mantenimientoVehiculosRoutes);
 
 app.use((req, res, next) => {

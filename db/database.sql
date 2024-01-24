@@ -47,7 +47,7 @@ CREATE TABLE Vehiculos (
     KilometrajeActual INT
 );
 
-
+###Pendiente de hacer el controlador
 CREATE TABLE AsignacionGasolina (
     ID INT PRIMARY KEY,
     VehiculoID INT,
