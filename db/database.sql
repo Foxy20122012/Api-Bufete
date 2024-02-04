@@ -18,14 +18,7 @@ INSERT INTO employee values
 
 SELECT * FROM employee;
 
-CREATE TABLE MantenimientoVehiculos (
-    ID INT PRIMARY KEY,
-    UnidadAsignada INT,
-    TipoMantenimiento VARCHAR(255),
-    DescripcionMantenimiento TEXT,
-    FechaMantenimiento DATE,
-    CostoMantenimiento DECIMAL(10, 2)
-);
+
 
 ALTER TABLE MantenimientoVehiculos
 MODIFY COLUMN id INT AUTO_INCREMENT;
