@@ -4,20 +4,20 @@ export const executeSP = async (spName, params) => {
   const connection = await pool.getConnection();
 
   try {
-    const [rows, fields] = await connection.execute(`CALL ${spName}(?, ?)`, params);
+    const [rows, fields] = await connection.execute(`CALL ${spName}(${params.map(() => '?').join(', ')})`, params);
     return rows;
   } catch (error) {
     console.error('Error en la ejecución del Stored Procedure:', error);
     throw error;
   } finally {
-    connection.release(); // Liberar la conexión después de su uso
+    connection.release();
   }
 };
 
-export const dataController = async (req, res) => {
+export const spController = async (req, res) => {
   const { body } = req;
 
-  if (!body || !body.spName || !body.params || body.params.length !== 2) {
+  if (!body || !body.spName || !body.params || !Array.isArray(body.params)) {
     return res.status(400).json({ error: 'Solicitud incorrecta' });
   }
 
